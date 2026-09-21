@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
-    <title>For the love of my life</title>
+    <title>🌻</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -911,6 +911,7 @@
 
       .secret-modal-card {
         position: relative;
+        overflow: hidden;
         width: min(90vw, 420px);
         background: rgba(255, 255, 255, 0.92);
         border: 2px solid rgba(250, 204, 21, 0.7);
@@ -957,26 +958,9 @@
         animation: drawHeart 2.2s ease forwards;
       }
 
-      .secret-sparkle {
-        fill: #f59e0b;
-        opacity: 0;
-        animation: sparkleIn 0.7s ease 1.8s forwards;
-      }
-
       @keyframes drawHeart {
         to {
           stroke-dashoffset: 0;
-        }
-      }
-
-      @keyframes sparkleIn {
-        from {
-          opacity: 0;
-          transform: scale(0.7);
-        }
-        to {
-          opacity: 1;
-          transform: scale(1);
         }
       }
 
@@ -1555,11 +1539,35 @@
         position: fixed;
         inset: 0;
         z-index: 80;
-        display: none;
+        display: flex;
         overflow: hidden;
         align-items: center;
         justify-content: center;
         min-height: 100dvh;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateX(100%);
+        pointer-events: none;
+        transition:
+          opacity 0.75s ease,
+          transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+          visibility 0.85s ease;
+      }
+
+      .final-celebration.is-visible {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(0);
+        pointer-events: auto;
+      }
+
+      body.celebration-open #appShell {
+        opacity: 0.3;
+        transform: translateX(-12%);
+        transition:
+          opacity 0.75s ease,
+          transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+          filter 0.35s ease;
       }
 
       .celebration-flowers {
@@ -1611,20 +1619,6 @@
         padding: 0.7rem 0.8rem;
         text-align: center;
         font-size: 16px;
-      }
-
-      .password-close {
-        position: absolute;
-        top: 0.65rem;
-        right: 0.65rem;
-        width: 44px;
-        height: 44px;
-        border: 1px solid rgba(251, 191, 36, 0.35);
-        border-radius: 50%;
-        background: #f8dfc8;
-        color: #79513c;
-        font-size: 1.1rem;
-        line-height: 1;
       }
 
       #passwordTitle {
@@ -1759,6 +1753,39 @@
           filter 0.85s ease,
           opacity 0.85s ease;
       }
+
+      .secret-modal-card .secret-art {
+        position: absolute;
+        z-index: 0;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        display: grid;
+        place-items: center;
+        aspect-ratio: auto;
+        opacity: 0.16;
+        border: 0;
+        background: transparent;
+        pointer-events: none;
+      }
+
+      .secret-modal-card .secret-svg {
+        width: min(72%, 340px);
+        height: auto;
+      }
+
+      .secret-modal-card {
+        width: min(92vw, 620px);
+        max-height: none;
+        overflow-y: hidden;
+        padding: clamp(2.2rem, 7vw, 3.5rem)
+          clamp(1.25rem, 5vw, 2.5rem);
+      }
+
+      .secret-modal-card > p {
+        position: relative;
+        z-index: 1;
+      }
       body.experience-returning .secret-modal-card {
         filter: blur(12px);
         opacity: 0;
@@ -1767,6 +1794,187 @@
         overflow: hidden;
       }
 
+      @media (max-width: 639px) {
+        header {
+          padding-inline: 0.7rem !important;
+        }
+
+        header > div:first-child > span {
+          font-size: 1.05rem;
+        }
+
+        #audioBtn {
+          width: 44px;
+          padding-inline: 0;
+        }
+
+        #audioText {
+          display: none;
+        }
+
+        main {
+          justify-content: flex-start;
+          padding-top: 0.25rem !important;
+        }
+
+        .intro-title {
+          width: min(100%, 25rem);
+        }
+
+        #heroTitle {
+          font-size: clamp(1.65rem, 8vw, 2.4rem);
+        }
+
+        #heroSubtitle {
+          font-size: clamp(1.15rem, 5.6vw, 1.5rem);
+        }
+
+        .garden-card {
+          width: min(100%, 31rem);
+          padding: 0.55rem;
+        }
+
+        .garden-svg {
+          width: min(100%, 25rem);
+        }
+
+        #addFlowerBtn {
+          min-height: 50px;
+          width: min(100%, 19rem);
+        }
+
+        .garden-hint {
+          font-size: 0.72rem;
+          line-height: 1.35;
+        }
+
+        .final-envelope-slot {
+          width: calc(100vw - 0.75rem);
+          bottom: max(0.35rem, env(safe-area-inset-bottom));
+          max-height: 53dvh;
+          padding: 0.45rem;
+          border-radius: 1.1rem;
+        }
+
+        .final-envelope-slot #envelopeCard {
+          padding: 0.85rem;
+        }
+
+        .sky-dedication {
+          top: 11%;
+          left: 5%;
+          right: 5%;
+        }
+
+        .sky-dedication p {
+          font-size: clamp(1.75rem, 8vw, 2.5rem);
+        }
+
+        .final-celebration > #audioBtn {
+          top: max(0.55rem, env(safe-area-inset-top));
+          right: max(0.55rem, env(safe-area-inset-right));
+        }
+
+        .secret-modal-card {
+          width: min(94vw, 34rem);
+          padding: 2.4rem 1rem 2rem;
+        }
+
+        .secret-modal-card .secret-svg {
+          width: min(72%, 18rem);
+        }
+      }
+
+      @media (hover: none) and (pointer: coarse) {
+        button,
+        input {
+          min-height: 44px;
+        }
+
+        .heart-sunflower {
+          -webkit-tap-highlight-color: transparent;
+        }
+      }
+
+      @media (min-width: 640px) and (max-width: 1023px) {
+        main {
+          padding-inline: 1.5rem !important;
+        }
+
+        .garden-card {
+          width: min(86vw, 560px);
+          max-width: 560px;
+        }
+
+        .garden-svg {
+          width: min(100%, 510px);
+        }
+
+        .final-envelope-slot {
+          width: min(88vw, 500px);
+          max-height: 58dvh;
+        }
+      }
+
+      @media (min-width: 1024px) {
+        main {
+          padding-inline: 2rem !important;
+        }
+
+        .garden-card {
+          width: min(52vw, 600px);
+          max-width: 600px;
+        }
+
+        .garden-svg {
+          width: min(100%, 560px);
+        }
+
+        .final-envelope-slot {
+          width: min(62vw, 560px);
+          max-height: 62dvh;
+        }
+      }
+
+      @media (min-width: 1440px) and (min-height: 800px) {
+        .garden-card {
+          width: min(42vw, 700px);
+          max-width: 700px;
+        }
+
+        .garden-svg {
+          width: min(100%, 660px);
+        }
+
+        .heart-label {
+          font-size: 1.55rem;
+        }
+
+        .final-envelope-slot {
+          width: min(52vw, 620px);
+          max-height: 64dvh;
+        }
+      }
+
+      @media (orientation: landscape) and (max-height: 600px) {
+        .experience-intro__content {
+          transform: scale(0.86);
+        }
+
+        .final-envelope-slot {
+          max-height: 76dvh;
+        }
+
+        .sky-dedication {
+          top: 7%;
+        }
+
+        .sky-dedication p {
+          font-size: clamp(1.5rem, 6vh, 2.4rem);
+        }
+      }
+
+      /* Colores y ajustes finales de la carta, la celebración y el audio. */
       #recipientDisplayName {
         color: #b57516;
         text-decoration-color: #e8b652;
@@ -1957,13 +2165,13 @@
           <div
             class="garden-card relative glass-card glow-box border-2 border-amber-200/80"
           >
-            <p class="heart-label">Un corazón para ti</p>
+            <p class="heart-label">Un jardín especial para ti</p>
             <svg
               id="flowerGardenSvg"
               viewBox="35 65 430 425"
               class="garden-svg"
               role="group"
-              aria-label="Corazón de girasoles con mensajes"
+              aria-label="Jardín de girasoles con mensajes"
             >
               <defs>
                 <linearGradient
@@ -2104,7 +2312,7 @@
               <button
                 id="addFlowerBtn"
                 disabled
-                aria-label="Añadir otro girasol al corazón"
+                aria-label="Añadir otro girasol al jardín"
                 class="bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white font-semibold py-2.5 px-5 rounded-full shadow-lg hover:shadow-amber-400/50 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 flex items-center space-x-2 text-sm"
               >
                 <span aria-hidden="true" class="">+</span>
@@ -2162,7 +2370,7 @@
                 <div class="personal-note">
                   <span aria-hidden="true" class="text-amber-500 mr-1">♡</span>
                   <span class="text-amber-600">
-                    Y al final, este corazón tenía un pequeño secreto para ti.
+                    Y al final, este detalle tenía un pequeño secreto para ti.
                     ✨
                   </span>
                 </div>
@@ -2239,14 +2447,6 @@
               class="secret-heart"
               d="M100 160 L35 95 C10 70 18 32 55 32 C72 32 86 40 100 56 C114 40 128 32 145 32 C182 32 190 70 165 95 L100 160 Z"
             />
-            <g class="secret-sparkle">
-              <path
-                d="M100 18 L106 38 L126 44 L106 50 L100 70 L94 50 L74 44 L94 38 Z"
-                fill="#f59e0b"
-              />
-              <circle cx="146" cy="60" r="6" fill="#fbbf24" />
-              <circle cx="54" cy="70" r="5" fill="#facc15" />
-            </g>
           </svg>
         </div>
         <p
@@ -2269,14 +2469,6 @@
       aria-labelledby="passwordTitle"
     >
       <form id="passwordForm" class="password-card">
-        <button
-          id="passwordCloseBtn"
-          class="password-close"
-          type="button"
-          aria-label="Cerrar solicitud de contraseña"
-        >
-          &times;
-        </button>
         <p
           id="passwordTitle"
           class="font-serifHeading text-xl font-bold text-amber-300"
@@ -2344,14 +2536,15 @@
           password: "flores",
         };
 
-        // --- State Variables ---
+        // --- Estado de la experiencia ---
         let flowerCount = 0;
         let phase = "intro";
         const reducedMotion = window.matchMedia(
           "(prefers-reduced-motion: reduce)",
         );
         const sequenceTimers = new Set();
-        // Los tiempos de la secuencia se suspenden si la pestaña queda oculta.
+        // Los tiempos se suspenden cuando la pestaña queda oculta para que la
+        // experiencia no avance mientras la persona está en otra aplicación.
         function scheduleSequence(callback, delay) {
           const task = { callback, remaining: delay, started: 0, id: null };
           sequenceTimers.add(task);
@@ -2401,7 +2594,6 @@
         const passwordForm = document.getElementById("passwordForm");
         const passwordInput = document.getElementById("passwordInput");
         const passwordError = document.getElementById("passwordError");
-        const passwordCloseBtn = document.getElementById("passwordCloseBtn");
         const correctPassword = PERSONALIZATION.password;
         const envelopeCard = document.getElementById("envelopeCard");
         const finalEnvelopeSlot = document.getElementById("finalEnvelopeSlot");
@@ -2568,9 +2760,11 @@
             PERSONALIZATION.secretMessage,
           );
 
-          document.title = `For the love of my life`;
+          document.title = `🌻`;
         }
 
+        // Mensajes breves de idioma/ayuda; el temporizador se reinicia si
+        // llega una nueva interacción antes de que desaparezca el anterior.
         function showToast(msg, emoji = "💛") {
           document.getElementById("toastEmoji").textContent = emoji;
           toastMessage.textContent = msg;
@@ -2597,7 +2791,7 @@
           toastHideTimer = setTimeout(() => {
             toastNotification.classList.remove("translate-y-0", "opacity-100");
             toastNotification.classList.add("translate-y-20", "opacity-0");
-          }, 3000);
+          }, 6000);
         }
 
         const MAX_HEART_FLOWERS = 30;
@@ -2727,7 +2921,7 @@
               ?.classList.remove("is-selected");
             addFlowerBtn.disabled = true;
             document.getElementById("addFlowerLabel").textContent =
-              "El corazón está completo 💛";
+              "Todo está completo 💛";
             flowersGroup.classList.add("heart-complete");
             scheduleSequence(
               () => {
@@ -2744,6 +2938,8 @@
         }
         addFlowerBtn.addEventListener("click", () => plantHeartSunflower());
 
+        // La vista final se prepara una sola vez: genera las estrellas y mueve
+        // la carta fuera del flujo principal para poder animarla como escena.
         function showFinalCelebration() {
           if (
             finalCelebrationUnlocked ||
@@ -2821,6 +3017,8 @@
 
         noPasswordBtn.addEventListener("click", closeFinalCelebration);
 
+        // Libera timers, audio, nodos SVG y estados visuales para permitir
+        // volver a comenzar sin duplicar flores ni listeners.
         function resetExperience() {
           sequenceTimers.forEach((task) => clearTimeout(task.id));
           sequenceTimers.clear();
@@ -2940,6 +3138,8 @@
           sequenceTimers.delete(secretReturnTask);
           secretReturnTask = null;
         }
+        // El mensaje secreto vuelve automáticamente a la escena final después
+        // de 8 segundos; la transición de salida se mantiene separada.
         function beginSecretReturn() {
           if (
             phase !== "celebrating" ||
@@ -2979,7 +3179,7 @@
           cancelSecretReturn();
           secretReturnTask = scheduleSequence(
             beginSecretReturn,
-            (reducedMotion.matches ? 0 : 2500) + 3000,
+            (reducedMotion.matches ? 0 : 2500) + 5500,
           );
           syncInteraction();
         }
@@ -3032,14 +3232,10 @@
           );
         });
 
-        passwordCloseBtn.addEventListener("click", closePasswordModal);
         passwordModal.addEventListener("click", (event) => {
           if (event.target === passwordModal) closePasswordModal();
         });
 
-        document
-          .querySelector(".secret-modal-backdrop")
-          .addEventListener("click", closeSecretModal);
         document.addEventListener("keydown", (event) => {
           if (phase === "returning") return;
           if (
