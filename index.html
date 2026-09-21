@@ -1141,6 +1141,14 @@
             calc(var(--star-delay) + 0.65s) infinite alternate;
       }
 
+      body.celebration-open .final-celebration.is-visible .constellation-star {
+        animation-play-state: running !important;
+      }
+
+      body.is-hidden .final-celebration .constellation-star {
+        animation-play-state: paused !important;
+      }
+
       @keyframes constellationStarIn {
         to {
           opacity: 1;
@@ -1554,11 +1562,35 @@
           visibility 0.85s ease;
       }
 
+      .final-celebration-backdrop {
+        opacity: 0;
+        transition: opacity 0.9s ease;
+      }
+
+      .sky-dedication,
+      .final-envelope-slot {
+        opacity: 0;
+        transform: translateY(1.5rem);
+        transition:
+          opacity 0.7s ease 0.25s,
+          transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.25s;
+      }
+
       .final-celebration.is-visible {
         opacity: 1;
         visibility: visible;
         transform: translateX(0);
         pointer-events: auto;
+      }
+
+      .final-celebration.is-visible .final-celebration-backdrop {
+        opacity: 1;
+      }
+
+      .final-celebration.is-visible .sky-dedication,
+      .final-celebration.is-visible .final-envelope-slot {
+        opacity: 1;
+        transform: translateY(0);
       }
 
       body.celebration-open #appShell {
@@ -1785,6 +1817,10 @@
       .secret-modal-card > p {
         position: relative;
         z-index: 1;
+      }
+
+      #secretModalText {
+        white-space: pre-line;
       }
       body.experience-returning .secret-modal-card {
         filter: blur(12px);
@@ -2532,7 +2568,7 @@
             "Sé que últimamente traes una rutina medio loca y que hay días interminables (sobre todo cuando te toca ir a la oficina desde tempranito). Como sé que andas a mil por hora, no quiero quitarte tiempo, pero no podía dejar pasar el 21 de septiembre sin hacer esto. Si te soy sincero, quería asegurarme de ser yo quien te regalara tus flores amarillas hoy (ya sabes cómo soy con eso, jaja). Mi única intención es sacarte una sonrisa en medio de la semana, porque sin importar qué tan pesado esté el día, siempre te vas a merecer que te llenen de detalles.",
           closing: "Con mucho cariño ❤️",
           secretMessage:
-            "La canción que está de fondo no es casualidad. No busco abrumarte, presionarte, ni invadir tu espacio. Solo quiero que sepas que aquí estoy, con ganas de cuidarte y de que nos volvamos a descubrir... a tu ritmo.",
+            "La canción que está de fondo no es casualidad. No busco abrumarte, presionarte, ni invadir tu espacio. Solo quiero que sepas que aquí estoy, con ganas de cuidarte y de que nos volvamos a descubrir... a tu ritmo. \nEspero te hayan gustado tus flores amarillas.",
           password: "flores",
         };
 
@@ -2542,6 +2578,22 @@
         const reducedMotion = window.matchMedia(
           "(prefers-reduced-motion: reduce)",
         );
+        const touchDevice = window.matchMedia(
+          "(hover: none) and (pointer: coarse)",
+        );
+
+        // La vibración es opcional y solo se solicita en dispositivos táctiles
+        // compatibles; nunca bloquea la experiencia si el navegador no la admite.
+        function vibrate(pattern) {
+          if (
+            !touchDevice.matches ||
+            reducedMotion.matches ||
+            typeof navigator.vibrate !== "function"
+          )
+            return;
+          navigator.vibrate(pattern);
+        }
+
         const sequenceTimers = new Set();
         // Los tiempos se suspenden cuando la pestaña queda oculta para que la
         // experiencia no avance mientras la persona está en otra aplicación.
@@ -2914,6 +2966,13 @@
             return;
           const flower = createHeartSunflower(flowerCount, first);
           flowerCount++;
+          if (!first) {
+            vibrate(
+              flowerCount === MAX_HEART_FLOWERS
+                ? [45, 35, 90, 35, 160]
+                : 18,
+            );
+          }
           if (flowerCount === MAX_HEART_FLOWERS) {
             phase = "completing";
             flowersGroup
@@ -2982,7 +3041,7 @@
             skyPoints.push({ x, y });
             const index = skyPoints.length;
             const star = document.createElement("span");
-            star.className = `constellation-star${index % 3 === 0 ? " is-twinkling" : ""}${index % 11 === 0 ? " is-radiant" : ""}`;
+            star.className = `constellation-star is-twinkling${index % 11 === 0 ? " is-radiant" : ""}`;
             star.style.setProperty("--star-left", `${x}%`);
             star.style.setProperty("--star-top", `${y}%`);
             star.style.setProperty(
@@ -3139,7 +3198,7 @@
           secretReturnTask = null;
         }
         // El mensaje secreto vuelve automáticamente a la escena final después
-        // de 8 segundos; la transición de salida se mantiene separada.
+        // de 10 segundos; la transición de salida se mantiene separada.
         function beginSecretReturn() {
           if (
             phase !== "celebrating" ||
@@ -3147,6 +3206,7 @@
           )
             return;
           phase = "returning";
+          vibrate(35);
           fadeMusicToSilence(reducedMotion.matches ? 100 : 1400);
           document.body.classList.add("experience-returning");
           secretModal.inert = true;
@@ -3179,7 +3239,7 @@
           cancelSecretReturn();
           secretReturnTask = scheduleSequence(
             beginSecretReturn,
-            (reducedMotion.matches ? 0 : 2500) + 5500,
+            (reducedMotion.matches ? 0 : 2500) + 7500,
           );
           syncInteraction();
         }

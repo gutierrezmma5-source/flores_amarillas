@@ -10,10 +10,13 @@ Experiencia web interactiva de una sola página para regalar flores amarillas, u
 - Toast temporal para mostrar el idioma de cada flor.
 - Carta especial con datos personalizables.
 - Acceso protegido por contraseña al mensaje secreto.
-- Cierre automático del mensaje secreto después de 8 segundos.
-- Celebración final con cielo, estrellas y carta.
+- Cierre automático del mensaje secreto después de 10 segundos.
+- El mensaje secreto conserva el salto de línea antes de la despedida final.
+- Transición fluida hacia la celebración final con entrada escalonada del fondo, dedicatoria y carta.
+- Celebración final con cielo, estrellas animadas durante toda la estancia y carta.
 - Diseño responsive con prioridad en teléfonos, además de ajustes para tabletas, laptops, televisiones y orientación horizontal.
 - Soporte para `prefers-reduced-motion`.
+- Respuesta háptica opcional en móviles: vibración breve por flor, patrón especial al completar el jardín y pulso suave al terminar el mensaje secreto.
 - Parámetros opcionales en la URL para personalizar el contenido sin editar el archivo.
 
 ## Estructura
@@ -88,7 +91,7 @@ Los valores de la URL se insertan con `textContent`; no se interpretan como HTML
 4. Al llegar a 30 flores se muestra la cinta y luego la celebración final.
 5. La carta permite solicitar la contraseña.
 6. Una contraseña correcta abre el mensaje secreto.
-7. El mensaje secreto se muestra durante 8 segundos y la experiencia vuelve automáticamente a la escena final.
+7. El mensaje secreto se muestra durante 10 segundos y la experiencia vuelve automáticamente a la escena final.
 8. `Volver` limpia el estado y permite empezar de nuevo.
 
 ## Organización del código
@@ -100,6 +103,8 @@ Los valores de la URL se insertan con `textContent`; no se interpretan como HTML
 - **Temporizadores:** `scheduleSequence` gestiona las animaciones y pausa sus tiempos cuando la pestaña queda oculta.
 - **Jardín SVG:** `createHeartSunflower` crea cada flor y `plantHeartSunflower` controla el progreso.
 - **Celebración:** `showFinalCelebration` genera las estrellas y mueve la carta a la escena final.
+- **Transición:** la escena final combina desplazamiento, opacidad y entradas escalonadas para evitar cambios bruscos entre vistas.
+- **Háptica móvil:** `vibrate` usa la API opcional del navegador únicamente en dispositivos táctiles compatibles.
 - **Limpieza:** `resetExperience` cancela timers, detiene el audio y devuelve la experiencia a su estado inicial.
 
 ## Consideraciones de accesibilidad
@@ -118,6 +123,8 @@ Los valores de la URL se insertan con `textContent`; no se interpretan como HTML
 - Mantén las posiciones de `heartPositions` dentro del `viewBox` del jardín.
 - Prueba al menos `390x844` para móvil y `1440x900` para escritorio después de cambiar estilos responsive.
 - Usa un servidor local cuando verifiques audio, foco, modales y comportamiento de navegación.
+- Las estrellas deben seguir animándose mientras `finalCelebration` esté visible; solo se pausan cuando la pestaña queda oculta.
+- La vibración depende de `navigator.vibrate`, por lo que algunos navegadores móviles pueden ignorarla sin afectar la experiencia.
 
 ## Estado de la auditoría
 
